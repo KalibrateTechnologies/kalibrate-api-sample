@@ -1,0 +1,334 @@
+{
+	"info": {
+		"_postman_id": "6d459e86-77df-4b44-8675-0ef6de613faf",
+		"name": "Data API Training",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authenticate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    var data = JSON.parse(responseBody);",
+							"    postman.setEnvironmentVariable(\"authToken\", data.access_token);",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "scope",
+							"value": "{{scope}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{client_secret}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://login.microsoftonline.com/{{msTenantId}}/oauth2/v2.0/token",
+					"protocol": "https",
+					"host": [
+						"login",
+						"microsoftonline",
+						"com"
+					],
+					"path": [
+						"{{msTenantId}}",
+						"oauth2",
+						"v2.0",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStatus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiEndpoint}}/status",
+					"host": [
+						"{{apiEndpoint}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllGlobalProducts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiEndpoint}}/product?query=(entityVariant=Global)+(limit=0)",
+					"host": [
+						"{{apiEndpoint}}"
+					],
+					"path": [
+						"product"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "(entityVariant=Global)+(limit=0)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllOwnProducts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiEndpoint}}/product?query=(entityVariant=Own)+(limit=0)",
+					"host": [
+						"{{apiEndpoint}}"
+					],
+					"path": [
+						"product"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "(entityVariant=Own)+(limit=0)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCompetitorProducts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiEndpoint}}/product?query=(entityVariant=Competitor)+(limit=0)",
+					"host": [
+						"{{apiEndpoint}}"
+					],
+					"path": [
+						"product"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "(entityVariant=Competitor)+(limit=0)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMostRecentOwnPrices",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiEndpoint}}/price?query=(entityVariant=Own)+(orderBy=createdOn)+(direction=descending)+(limit=100)",
+					"host": [
+						"{{apiEndpoint}}"
+					],
+					"path": [
+						"price"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "(entityVariant=Own)+(orderBy=createdOn)+(direction=descending)+(limit=100)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNextMostRecentOwnPrices",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiEndpoint}}/price?query=(entityVariant=Own)+(orderBy=createdOn)+(direction=descending)+(limit=100)+(offset=100)",
+					"host": [
+						"{{apiEndpoint}}"
+					],
+					"path": [
+						"price"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "(entityVariant=Own)+(orderBy=createdOn)+(direction=descending)+(limit=100)+(offset=100)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllOwnSites",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiEndpoint}}/site?query=(entityVariant=Own)+(limit=0)",
+					"host": [
+						"{{apiEndpoint}}"
+					],
+					"path": [
+						"site"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "(entityVariant=Own)+(limit=0)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCompetitorSites",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiEndpoint}}/site?query=(entityVariant=Own)+(limit=0)",
+					"host": [
+						"{{apiEndpoint}}"
+					],
+					"path": [
+						"site"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "(entityVariant=Own)+(limit=0)"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
